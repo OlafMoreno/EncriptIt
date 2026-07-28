@@ -1,0 +1,34 @@
+# Archivos compilados
+bin/
+target/
+out/
+build/
+
+# Eclipse
+.metadata/
+.settings/
+.project
+.classpath
+
+# VS Code (si alguna vez lo abres)
+.vscode/
+
+# IntelliJ IDEA
+.idea/
+*.iml
+
+# Archivos temporales
+*.log
+*.tmp
+*.bak
+*.swp
+
+# Archivos del sistema
+.DS_Store
+Thumbs.db
+
+# Java
+*.class
+
+# Maven
+.mvn/wrapper/maven-wrapper.jar

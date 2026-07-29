@@ -8,11 +8,17 @@ import javax.crypto.spec.SecretKeySpec;
 import java.security.SecureRandom;
 import java.security.spec.KeySpec;
 import java.util.Base64;
+import java.util.Scanner;
 
 public class AES256  {
 	private static final int KEY_LENGTH = 256;
 	private static final int ITERATION_COUNT = 65536;
-	public static String encrypt(String strToEncrypt, String secretKey, String salt) {
+	private static final Scanner sc = new Scanner(System.in);
+
+	static String salt = "salt";
+	static String secretKey = "key";
+	
+	public static String encrypt(String strToEncrypt) {
 
 	    try {
 
@@ -22,7 +28,7 @@ public class AES256  {
 	        IvParameterSpec ivspec = new IvParameterSpec(iv);
 
 	        SecretKeyFactory factory = SecretKeyFactory.getInstance("PBKDF2WithHmacSHA256");
-	        KeySpec spec = new PBEKeySpec(secretKey.toCharArray(), salt.getBytes(), ITERATION_COUNT, KEY_LENGTH);
+	        KeySpec spec = new PBEKeySpec(getSecretKey().toCharArray(), getSalt().getBytes(), ITERATION_COUNT, KEY_LENGTH);
 	        SecretKey tmp = factory.generateSecret(spec);
 	        SecretKeySpec secretKeySpec = new SecretKeySpec(tmp.getEncoded(), "AES");
 
@@ -41,7 +47,7 @@ public class AES256  {
 	    }
 	  }
 	
-	public static String decrypt(String strToDecrypt, String secretKey, String salt) {
+	public static String decrypt(String strToDecrypt) {
 
 	    try {
 
@@ -51,7 +57,7 @@ public class AES256  {
 	        IvParameterSpec ivspec = new IvParameterSpec(iv);
 
 	        SecretKeyFactory factory = SecretKeyFactory.getInstance("PBKDF2WithHmacSHA256");
-	        KeySpec spec = new PBEKeySpec(secretKey.toCharArray(), salt.getBytes(), ITERATION_COUNT, KEY_LENGTH);
+	        KeySpec spec = new PBEKeySpec(getSecretKey().toCharArray(), getSalt().getBytes(), ITERATION_COUNT, KEY_LENGTH);
 	        SecretKey tmp = factory.generateSecret(spec);
 	        SecretKeySpec secretKeySpec = new SecretKeySpec(tmp.getEncoded(), "AES");
 
@@ -67,5 +73,56 @@ public class AES256  {
 	        //e.printStackTrace();
 	        return null;
 	    }
+	}
+	
+	
+	public static void setOptionsMenu() {
+		String option;
+		do {
+		    do {
+		        System.out.println("1) Show variables");
+		        System.out.println("2) Write Salt");
+		        System.out.println("3) Write Secret Key");
+		        System.out.println("0) Continue");
+		        System.out.println("------------");
+		        option = sc.nextLine();
+		    } while (!"1".equals(option) && !"2".equals(option) && !"3".equals(option) && !"0".equals(option));
+	
+		    switch (option) {
+		        case "1":
+			        System.out.println("Salt: "+getSalt());
+			        System.out.println("Secret Key: "+getSecretKey());
+			        System.out.println("------------");
+		            break;
+		        case "2":
+			        System.out.println("New Salt: ");
+			        System.out.println("------------");
+			        String newSalt = sc.nextLine();
+			        setSalt(newSalt);
+		            break;
+		        case "3":
+			        System.out.println("New Secret Key: ");
+			        System.out.println("------------");
+			        String newSecretKey = sc.nextLine();
+			        setSecretKey(newSecretKey);
+		            break;
+		    }
+		}while(!"0".equals(option));		
+	}
+	
+	public static void setSalt(String newSalt) {
+		salt= newSalt;
+	}
+	
+	public static String getSalt() {
+		return salt;
+	}
+	
+	public static void setSecretKey(String newSecretKey) {
+		secretKey= newSecretKey;
+	}
+	
+	public static String getSecretKey() {
+		return secretKey;
 	}
 }

@@ -7,17 +7,18 @@ public class Main {
 
 	public static void main(String[] args) {
 			    
+		String algorthim = setAlgorithm();
+		switch (algorthim) {
+			case "AES256": AES256.setOptionsMenu(); break;
+		}
 	    String option = setOption();
 		
 		String str= setText();
 		
-		String algorthim = "AES256";
 		switch (algorthim) {
 			case "AES256":
-				String secretKey = "key";
-			    String salt = "salt";
 			    if(option.equals("encrypt")) {
-				    String encryptedString = AES256.encrypt(str, secretKey, salt);
+				    String encryptedString = AES256.encrypt(str);
 				    if (encryptedString == null) {
 				        System.err.println("Encryption failed.");
 				        return;
@@ -27,7 +28,7 @@ public class Main {
 				}
 				
 				if(option.equals("decrypt")) {
-				    String decryptedString = AES256.decrypt(str, secretKey, salt);
+				    String decryptedString = AES256.decrypt(str);
 				    if (decryptedString == null) {
 				        System.err.println("Dencryption failed.");
 				        return;
@@ -44,6 +45,7 @@ public class Main {
 	    do {
 	        System.out.println("1) Encrypt");
 	        System.out.println("2) Decrypt");
+	        System.out.println("------------");
 	        option = sc.nextLine();
 	    } while (!"1".equals(option) && !"2".equals(option));
 
@@ -59,8 +61,27 @@ public class Main {
 		
 	}
 	
+	public static String setAlgorithm() {
+		String option;
+
+	    do {
+	        System.out.println("1) AES256");
+	        System.out.println("------------");
+	        option = sc.nextLine();
+	    } while (!"1".equals(option));
+
+	    switch (option) {
+	        case "1":
+	            option = "AES256";
+	            break;
+	    }
+		return option;
+		
+	}
+	
 	public static String setText() {
 		System.out.println("Enter text:");
+        System.out.println("------------");
 		String str= sc.nextLine();
 		return str;
 	}

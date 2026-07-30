@@ -6,37 +6,21 @@ public class Main {
 	private static final Scanner sc = new Scanner(System.in);
 
 	public static void main(String[] args) {
-			    
-		String algorthim = setAlgorithm();
-		switch (algorthim) {
-			case "AES256": AES256.setOptionsMenu(); break;
-		}
-	    String option = setOption();
+		do {	    
+			String algorthim = setAlgorithm();
+			switch (algorthim) {
+				case "AES256": AES256.setOptionsMenu(); break;
+			}
+		    String option = setOption();
+			
+			String text= setText();
+			
+			System.out.println(execute(algorthim, option, text));
 		
-		String str= setText();
-		
-		switch (algorthim) {
-			case "AES256":
-			    if(option.equals("encrypt")) {
-				    String encryptedString = AES256.encrypt(str);
-				    if (encryptedString == null) {
-				        System.err.println("Encryption failed.");
-				        return;
-				    }
-					System.out.println(encryptedString);
-					return ;
-				}
-				
-				if(option.equals("decrypt")) {
-				    String decryptedString = AES256.decrypt(str);
-				    if (decryptedString == null) {
-				        System.err.println("Dencryption failed.");
-				        return;
-				    }
-					System.out.println(decryptedString);
-					return ;
-				}
-		}
+	        System.out.println("0) Continue");
+	        System.out.println("1) Exit");
+	        System.out.println("------------");
+	    } while (!"1".equals( sc.nextLine()));
 	}
 	
 	public static String setOption() {
@@ -86,4 +70,25 @@ public class Main {
 		return str;
 	}
 
+	public static String execute(String algorthim, String option, String rawText) {
+		switch (algorthim) {
+			case "AES256":
+			    if(option.equals("encrypt")) {
+				    String encryptedString = AES256.encrypt(rawText);
+				    if (encryptedString == null) {
+				        return "Encryption failed.";
+				    }
+					return encryptedString;
+				}
+				
+				if(option.equals("decrypt")) {
+				    String decryptedString = AES256.decrypt(rawText);
+				    if (decryptedString == null) {
+				        return "Dencryption failed.";
+				    }
+					return decryptedString;
+				}
+		}
+		return "Unexpected Error";
+	}
 }

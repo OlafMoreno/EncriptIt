@@ -6,6 +6,13 @@ public class Main {
 	private static final Scanner sc = new Scanner(System.in);
 
 	public static void main(String[] args) {
+        System.out.println("********************");
+        System.out.println("*     EncriptIt    *");
+        System.out.println("*    encript and   *");
+        System.out.println("*   decrypt texts  *");
+        System.out.println("*   with multiple  *");
+        System.out.println("*    algoritmns    *");
+        System.out.println("********************");
 		do {	    
 			String algorthim = setAlgorithm();
 			switch (algorthim) {

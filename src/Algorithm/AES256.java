@@ -80,6 +80,7 @@ public class AES256  {
 		String option;
 		do {
 		    do {
+		        System.out.println("------------");
 		        System.out.println("1) Show variables");
 		        System.out.println("2) Write Salt");
 		        System.out.println("3) Write Secret Key");
@@ -90,17 +91,20 @@ public class AES256  {
 	
 		    switch (option) {
 		        case "1":
+			        System.out.println("------------");
 			        System.out.println("Salt: "+getSalt());
 			        System.out.println("Secret Key: "+getSecretKey());
 			        System.out.println("------------");
 		            break;
 		        case "2":
+			        System.out.println("------------");
 			        System.out.println("New Salt: ");
 			        System.out.println("------------");
 			        String newSalt = sc.nextLine();
 			        setSalt(newSalt);
 		            break;
 		        case "3":
+			        System.out.println("------------");
 			        System.out.println("New Secret Key: ");
 			        System.out.println("------------");
 			        String newSecretKey = sc.nextLine();

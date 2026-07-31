@@ -22,8 +22,18 @@ public class Main {
 			
 			String text= setText();
 			
-			System.out.println(execute(algorthim, option, text));
-		
+	        System.out.println("------------");
+			try {
+				String newText = execute(algorthim, option, text);
+				System.out.println("New text:");
+				System.out.println(newText);
+			} catch (Exception e) {
+				System.out.println("ERROR");
+				System.out.println(e.getMessage());
+			}
+			System.out.println("------------");
+
+			System.out.println("------------");
 	        System.out.println("0) Continue");
 	        System.out.println("1) Exit");
 	        System.out.println("------------");
@@ -34,6 +44,7 @@ public class Main {
 		String option;
 
 	    do {
+	        System.out.println("------------");
 	        System.out.println("1) Encrypt");
 	        System.out.println("2) Decrypt");
 	        System.out.println("------------");
@@ -56,6 +67,8 @@ public class Main {
 		String option;
 
 	    do {
+	        System.out.println("------------");
+	        System.out.println("Algorithms:");
 	        System.out.println("1) AES256");
 	        System.out.println("------------");
 	        option = sc.nextLine();
@@ -71,19 +84,20 @@ public class Main {
 	}
 	
 	public static String setText() {
+        System.out.println("------------");
 		System.out.println("Enter text:");
         System.out.println("------------");
 		String str= sc.nextLine();
 		return str;
 	}
 
-	public static String execute(String algorthim, String option, String rawText) {
+	public static String execute(String algorthim, String option, String rawText) throws Exception {
 		switch (algorthim) {
 			case "AES256":
 			    if(option.equals("encrypt")) {
 				    String encryptedString = AES256.encrypt(rawText);
 				    if (encryptedString == null) {
-				        return "Encryption failed.";
+						throw new Exception("Encryption failed");
 				    }
 					return encryptedString;
 				}
@@ -91,11 +105,11 @@ public class Main {
 				if(option.equals("decrypt")) {
 				    String decryptedString = AES256.decrypt(rawText);
 				    if (decryptedString == null) {
-				        return "Dencryption failed.";
+						throw new Exception("Decryption failed");
 				    }
 					return decryptedString;
 				}
 		}
-		return "Unexpected Error";
+		throw new Exception("Unexpected Error");
 	}
 }

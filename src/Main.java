@@ -1,6 +1,7 @@
 import java.util.Scanner;
 
 import Algorithm.AES256;
+import Algorithm.RSA;
 
 public class Main {
 	private static final Scanner sc = new Scanner(System.in);
@@ -16,7 +17,8 @@ public class Main {
 		do {	    
 			String algorthim = setAlgorithm();
 			switch (algorthim) {
-				case "AES256": AES256.setOptionsMenu(); break;
+			case "AES256": AES256.setOptionsMenu(); break;
+			case "RSA": RSA.setOptionsMenu(); break;
 			}
 		    String option = setOption();
 			
@@ -70,13 +72,17 @@ public class Main {
 	        System.out.println("------------");
 	        System.out.println("Algorithms:");
 	        System.out.println("1) AES256");
+	        System.out.println("2) RSA");
 	        System.out.println("------------");
 	        option = sc.nextLine();
-	    } while (!"1".equals(option));
+	    } while (!"1".equals(option) && !"2".equals(option));
 
 	    switch (option) {
 	        case "1":
 	            option = "AES256";
+	            break;
+	        case "2":
+	            option = "RSA";
 	            break;
 	    }
 		return option;
@@ -104,6 +110,22 @@ public class Main {
 				
 				if(option.equals("decrypt")) {
 				    String decryptedString = AES256.decrypt(rawText);
+				    if (decryptedString == null) {
+						throw new Exception("Decryption failed");
+				    }
+					return decryptedString;
+				}
+			case "RSA":
+			    if(option.equals("encrypt")) {
+				    String encryptedString = RSA.encrypt(rawText);
+				    if (encryptedString == null) {
+						throw new Exception("Encryption failed");
+				    }
+					return encryptedString;
+				}
+				
+				if(option.equals("decrypt")) {
+				    String decryptedString = RSA.decrypt(rawText);
 				    if (decryptedString == null) {
 						throw new Exception("Decryption failed");
 				    }

@@ -32,3 +32,6 @@ Thumbs.db
 
 # Maven
 .mvn/wrapper/maven-wrapper.jar
+
+#Archivos de uso
+src/data

@@ -1,3 +1,10 @@
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
+import java.nio.file.DirectoryStream;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Scanner;
 
 import Algorithm.AES256;
@@ -22,9 +29,11 @@ public class Main {
 			}
 		    String option = setOption();
 			
-			String text= setText();
-			
-	        System.out.println("------------");
+			String text= null;
+			do {
+					text=getText();
+			} while (text == null);
+			System.out.println("------------");
 			try {
 				String newText = execute(algorthim, option, text);
 				System.out.println("New text:");
@@ -89,6 +98,36 @@ public class Main {
 		
 	}
 	
+	public static String getText(){
+		String option;
+
+	    do {
+	        System.out.println("------------");
+	        System.out.println("1) Write It");
+	        System.out.println("2) Select File");
+	        System.out.println("------------");
+	        option = sc.nextLine();
+	    } while (!"1".equals(option) && !"2".equals(option));
+	    String output = null;
+	    switch (option) {
+	        case "1":
+	            output=setText();
+	            break;
+	        case "2":
+			try {
+				output=readFile();
+			} catch (Exception e) {
+				output=null;
+		        System.out.println("------------");
+		        System.out.println(e.getMessage());
+		        System.out.println("------------");
+			}
+	            break;
+	    }
+		return output;
+		
+	}
+	
 	public static String setText() {
         System.out.println("------------");
 		System.out.println("Enter text:");
@@ -134,4 +173,38 @@ public class Main {
 		}
 		throw new Exception("Unexpected Error");
 	}
+	
+    public static String readFile() throws Exception {
+
+        Path carpeta = Path.of("src/data");
+
+        List<Path> archivos = new ArrayList<>();
+
+        int i = 1;
+        try (DirectoryStream<Path> stream = Files.newDirectoryStream(carpeta)) {
+            for (Path archivo : stream) {
+                if (Files.isRegularFile(archivo)) {
+                    archivos.add(archivo);
+                    System.out.println(i + "- " + archivo.getFileName());
+                    i++;
+                }
+            }
+        }
+
+        if (archivos.isEmpty()) {
+    		throw new Exception("Empty folder, put the archive on src/data");
+        }
+
+        int opcion;
+        do {
+            System.out.print("Select a file: ");
+            opcion = Integer.parseInt(sc.nextLine());
+        } while (opcion < 1 || opcion > archivos.size());
+
+        Path archivoSeleccionado = archivos.get(opcion - 1);
+
+        String contenido = Files.readString(archivoSeleccionado);
+
+        return contenido;
+    }
 }

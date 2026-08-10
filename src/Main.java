@@ -174,23 +174,23 @@ public class Main {
 	
     public static String readFile() throws Exception {
 
-        Path carpeta = Path.of("src/data/input");
+        Path folder = Path.of("src/data/input");
 
-        List<Path> archivos = new ArrayList<>();
+        List<Path> files = new ArrayList<>();
 
         int i = 1;
-        try (DirectoryStream<Path> stream = Files.newDirectoryStream(carpeta)) {
+        try (DirectoryStream<Path> stream = Files.newDirectoryStream(folder)) {
             System.out.println("------------");
-            for (Path archivo : stream) {
-                if (Files.isRegularFile(archivo)) {
-                    archivos.add(archivo);
-                    System.out.println(i + "- " + archivo.getFileName());
+            for (Path file : stream) {
+                if (Files.isRegularFile(file)) {
+                    files.add(file);
+                    System.out.println(i + "- " + file.getFileName());
                     i++;
                 }
             }
         }
 
-        if (archivos.isEmpty()) {
+        if (files.isEmpty()) {
     		throw new Exception("Empty folder, put the archive on src/data/input");
         }
 
@@ -199,12 +199,12 @@ public class Main {
             System.out.println("Select a file: ");
             System.out.println("------------");
             opcion = Integer.parseInt(sc.nextLine());
-        } while (opcion < 1 || opcion > archivos.size());
+        } while (opcion < 1 || opcion > files.size());
 
-        Path archivoSeleccionado = archivos.get(opcion - 1);
+        Path selectedFile = files.get(opcion - 1);
 
-        String contenido = Files.readString(archivoSeleccionado);
+        String text = Files.readString(selectedFile);
 
-        return contenido;
+        return text;
     }
 }

@@ -43,8 +43,6 @@ public class Main {
 				System.out.println(e.getMessage());
 			}
 			System.out.println("------------");
-
-			System.out.println("------------");
 	        System.out.println("0) Continue");
 	        System.out.println("1) Exit");
 	        System.out.println("------------");
@@ -176,12 +174,13 @@ public class Main {
 	
     public static String readFile() throws Exception {
 
-        Path carpeta = Path.of("src/data");
+        Path carpeta = Path.of("src/data/input");
 
         List<Path> archivos = new ArrayList<>();
 
         int i = 1;
         try (DirectoryStream<Path> stream = Files.newDirectoryStream(carpeta)) {
+            System.out.println("------------");
             for (Path archivo : stream) {
                 if (Files.isRegularFile(archivo)) {
                     archivos.add(archivo);
@@ -192,12 +191,13 @@ public class Main {
         }
 
         if (archivos.isEmpty()) {
-    		throw new Exception("Empty folder, put the archive on src/data");
+    		throw new Exception("Empty folder, put the archive on src/data/input");
         }
 
         int opcion;
         do {
-            System.out.print("Select a file: ");
+            System.out.println("Select a file: ");
+            System.out.println("------------");
             opcion = Integer.parseInt(sc.nextLine());
         } while (opcion < 1 || opcion > archivos.size());
 

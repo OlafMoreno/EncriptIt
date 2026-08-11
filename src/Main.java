@@ -1,4 +1,5 @@
 import java.io.BufferedReader;
+import java.io.IOException;
 import java.io.InputStreamReader;
 import java.nio.file.DirectoryStream;
 import java.nio.file.Files;
@@ -36,8 +37,7 @@ public class Main {
 			System.out.println("------------");
 			try {
 				String newText = execute(algorthim, option, text);
-				System.out.println("New text:");
-				System.out.println(newText);
+				saveFile(newText);
 			} catch (Exception e) {
 				System.out.println("ERROR");
 				System.out.println(e.getMessage());
@@ -171,10 +171,35 @@ public class Main {
 		}
 		throw new Exception("Unexpected Error");
 	}
-	
+	public static void saveFile(String newText) {
+	    System.out.println("Enter NameFile:");
+	    System.out.println("------------");
+
+	    String str = sc.nextLine();
+
+	    Path folder = Path.of("src/data/output");
+	    Path file = folder.resolve(str + ".txt");
+
+	    int number = 1;
+
+	    while (Files.exists(file)) {
+	        file = folder.resolve(str + number + ".txt");
+	        number++;
+	    }
+
+	    try {
+	        Files.createDirectories(folder);
+	        Files.writeString(file, newText);
+		    System.out.println("------------");
+	        System.out.println("File saved successfully as " + file.getFileName());
+	    } catch (IOException e) {
+	        e.printStackTrace();
+	    }
+	}
     public static String readFile() throws Exception {
 
         Path folder = Path.of("src/data/input");
+		Files.createDirectories(folder);
 
         List<Path> files = new ArrayList<>();
 

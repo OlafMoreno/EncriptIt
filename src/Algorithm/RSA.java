@@ -19,7 +19,7 @@ public class RSA {
     private static PublicKey publicKey;
     private static PrivateKey privateKey;
 
-    public static void generateKeys() {
+    public static String generateKeys() {
         try {
             KeyPairGenerator keyGen = KeyPairGenerator.getInstance("RSA");
             keyGen.initialize(2048);
@@ -29,10 +29,11 @@ public class RSA {
             publicKey = keyPair.getPublic();
             privateKey = keyPair.getPrivate();
 
-            System.out.println("Keys generated successfully.");
+            return ("Keys generated successfully.");
 
         } catch (Exception e) {
             //e.printStackTrace();
+        	return e.getMessage();
         }
     }
 

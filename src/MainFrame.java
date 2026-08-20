@@ -20,6 +20,9 @@ import Algorithm.AES256;
 import Algorithm.RSA;
 
 import javax.swing.JTextField;
+import java.awt.Button;
+import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent;
 
 public class MainFrame {
 
@@ -283,6 +286,16 @@ public class MainFrame {
         privateKeyText.setText(RSA.getPrivateKey());
         JButton privateKeyPicker = new JButton("Pick");
         rsaOptionsSelector.add(privateKeyPicker);
+        
+        Button buttonGenerateKeys = new Button("Generate Random Keys");
+        buttonGenerateKeys.addActionListener(new ActionListener() {
+        	public void actionPerformed(ActionEvent e) {
+                actionLabel.setText(RSA.generateKeys());
+                publicKeyText.setText(RSA.getPublicKey());
+                privateKeyText.setText(RSA.getPrivateKey());
+        	}
+        });
+        rsaOptionsSelector.add(buttonGenerateKeys);
         
         privateKeyPicker.addActionListener(e -> {
         	JFileChooser fileChooser = new JFileChooser();

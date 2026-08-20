@@ -116,6 +116,7 @@ public class MainFrame {
         panelAction.add(actionLabel, BorderLayout.CENTER);
         panelAction.add(nextButton, BorderLayout.EAST);
         nextButton.addActionListener(e -> next());
+        backButton.addActionListener(e-> back());
     }
 
     private boolean next() {
@@ -138,6 +139,24 @@ public class MainFrame {
     	 }
     	 return false;
     }
+    private boolean back() {
+      	 switch (phase) {
+   	        case "AlghoritmSelector":
+   	          break;
+   	        case "AesOptionsSelector":
+   	       		removeMainPanel();
+   	        	createAlgorithmSelector();
+   	            phase="AlghoritmSelector";
+   	        	break;
+   	        case "RsaOptionsSelector":
+   	       		removeMainPanel();
+   	        	createAlgorithmSelector();
+   	            phase="AlghoritmSelector";
+   	        	break;
+      	 }
+      	 return false;
+      }
+
     
     private void removeMainPanel(){
     	Container contentPane = mainFrame.getContentPane();

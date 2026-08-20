@@ -30,6 +30,11 @@ public class MainFrame {
 
     private JFrame mainFrame;
 
+    private int windowWidth=500;
+    private int windowHeight=550;
+    private int columnWidth = 387;
+    private int columnHeight = 50;
+
     private JRadioButton aesButton;
     private JRadioButton rsaButton;
     
@@ -70,7 +75,7 @@ public class MainFrame {
     private void createFrame() {
         mainFrame = new JFrame();
         mainFrame.setTitle("Encript It");
-        mainFrame.setBounds(100, 100, 400, 450);
+        mainFrame.setBounds(100, 100, windowWidth, windowHeight);
         mainFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         JPanel mainPanel = new JPanel(new BorderLayout(0, 0));
         mainPanel.setBorder(
@@ -94,8 +99,8 @@ public class MainFrame {
             BorderLayout.CENTER
         );
         GridBagLayout gbl_algorithmSelector = new GridBagLayout();
-        gbl_algorithmSelector.columnWidths = new int[]{314, 0};
-        gbl_algorithmSelector.rowHeights = new int[]{101, 101, 101, 0};
+        gbl_algorithmSelector.columnWidths = new int[]{columnWidth};
+        gbl_algorithmSelector.rowHeights = new int[]{columnHeight, columnHeight, columnHeight, 0};
         gbl_algorithmSelector.columnWeights = new double[]{0.0, Double.MIN_VALUE};
         gbl_algorithmSelector.rowWeights = new double[]{0.0, 0.0, 0.0, Double.MIN_VALUE};
         algorithmSelector.setLayout(gbl_algorithmSelector);
@@ -205,8 +210,8 @@ public class MainFrame {
             BorderLayout.CENTER
         );
         GridBagLayout gbl_aes256OptionsSelector = new GridBagLayout();
-        gbl_aes256OptionsSelector.columnWidths = new int[]{104, 104, 104, 0};
-        gbl_aes256OptionsSelector.rowHeights = new int[]{147, 147, 0};
+        gbl_aes256OptionsSelector.columnWidths = new int[]{columnWidth/3, columnWidth/3, columnWidth/3};
+        gbl_aes256OptionsSelector.rowHeights = new int[]{columnHeight, columnHeight, 0};
         gbl_aes256OptionsSelector.columnWeights = new double[]{0.0, 0.0, 0.0, Double.MIN_VALUE};
         gbl_aes256OptionsSelector.rowWeights = new double[]{0.0, 0.0, Double.MIN_VALUE};
         aes256OptionsSelector.setLayout(gbl_aes256OptionsSelector);
@@ -303,8 +308,8 @@ public class MainFrame {
             BorderLayout.CENTER
         );
         GridBagLayout gbl_rsaOptionsSelector = new GridBagLayout();
-        gbl_rsaOptionsSelector.columnWidths = new int[]{129, 129, 129, 0};
-        gbl_rsaOptionsSelector.rowHeights = new int[]{94, 94, 94, 0};
+        gbl_rsaOptionsSelector.columnWidths = new int[]{columnWidth/3, columnWidth/3, columnWidth/3};
+        gbl_rsaOptionsSelector.rowHeights = new int[]{columnHeight, columnHeight, columnHeight, 0};
         gbl_rsaOptionsSelector.columnWeights = new double[]{0.0, 0.0, 0.0, Double.MIN_VALUE};
         gbl_rsaOptionsSelector.rowWeights = new double[]{0.0, 0.0, 0.0, Double.MIN_VALUE};
         rsaOptionsSelector.setLayout(gbl_rsaOptionsSelector);

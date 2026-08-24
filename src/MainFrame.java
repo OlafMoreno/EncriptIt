@@ -37,9 +37,14 @@ public class MainFrame {
 
     private JRadioButton aesButton;
     private JRadioButton rsaButton;
+    private JRadioButton encryptButton;
+    private JRadioButton decryptButton;
     
-    private String phase = "AlghoritmSelector"; 
-
+    
+    private String phase = "alghoritmSelector"; 
+    private String algorithm = null; 
+    private String action = null;
+    
     private JLabel actionLabel;
 
 
@@ -69,6 +74,7 @@ public class MainFrame {
         createFrame();
         createTitle();
         createAlgorithmSelector();
+        //createActionSelector();
         createActionPanel();
     }
 
@@ -129,6 +135,47 @@ public class MainFrame {
         group.add(rsaButton);
 
     }
+    
+    private void createActionSelector() {
+        JPanel optionSelector = new JPanel();
+        optionSelector.setBorder(
+                new EmptyBorder(20, 20, 20, 20)
+            );
+        mainFrame.getContentPane().add(
+        		optionSelector,
+            BorderLayout.CENTER
+        );
+        GridBagLayout gbl_algorithmSelector = new GridBagLayout();
+        gbl_algorithmSelector.columnWidths = new int[]{columnWidth};
+        gbl_algorithmSelector.rowHeights = new int[]{columnHeight, columnHeight, columnHeight, 0};
+        gbl_algorithmSelector.columnWeights = new double[]{0.0, Double.MIN_VALUE};
+        gbl_algorithmSelector.rowWeights = new double[]{0.0, 0.0, 0.0, Double.MIN_VALUE};
+        optionSelector.setLayout(gbl_algorithmSelector);
+        JLabel label = new JLabel("Select option:");
+        GridBagConstraints gbc_label = new GridBagConstraints();
+        gbc_label.fill = GridBagConstraints.BOTH;
+        gbc_label.insets = new Insets(0, 0, 5, 0);
+        gbc_label.gridx = 0;
+        gbc_label.gridy = 0;
+        optionSelector.add(label, gbc_label);
+        encryptButton = new JRadioButton("Encrypt");
+        GridBagConstraints gbc_encryptButton = new GridBagConstraints();
+        gbc_encryptButton.fill = GridBagConstraints.BOTH;
+        gbc_encryptButton.insets = new Insets(0, 0, 5, 0);
+        gbc_encryptButton.gridx = 0;
+        gbc_encryptButton.gridy = 1;
+        optionSelector.add(encryptButton, gbc_encryptButton);
+        ButtonGroup group = new ButtonGroup();
+        group.add(encryptButton);
+        decryptButton = new JRadioButton("Decrypt");
+        GridBagConstraints gbc_decryptButton = new GridBagConstraints();
+        gbc_decryptButton.fill = GridBagConstraints.BOTH;
+        gbc_decryptButton.gridx = 0;
+        gbc_decryptButton.gridy = 2;
+        optionSelector.add(decryptButton, gbc_decryptButton);
+        group.add(decryptButton);
+
+    }
 
     private void createActionPanel() {
         BorderLayout bl_panelAction = new BorderLayout();
@@ -149,20 +196,60 @@ public class MainFrame {
     }
 
     private boolean next() {
-    	 switch (phase) {
-	        case "AlghoritmSelector":
+    	switch (phase) {
+	        case "alghoritmSelector":
 	            if (aesButton.isSelected()) {
 	            	removeMainPanel();
 	                createAesOptionsSelector();
-	                phase="AesOptionsSelector";
+	                algorithm="aes256";
+	                phase="optionSelector";
+	                actionLabel.setText("");
 	                return true;
 	            } else if (rsaButton.isSelected()) {
 	            	removeMainPanel();
 	                createRsaOptionsSelector();
-	                phase="RsaOptionsSelector";
+	                algorithm="rsa";
+	                phase="optionSelector";
+	                actionLabel.setText("");
 	                return true;
 	            } else {
 	                actionLabel.setText("No algorithm selected");
+	                break;
+	            }
+	        case "optionSelector":
+	            if (algorithm.equals("aes256") && AES256.getSalt() != null && AES256.getSecretKey() != null) {
+	            	removeMainPanel();
+	            	createActionSelector();
+	                phase="actionSelector";
+	                actionLabel.setText("");
+	                return true;
+	            } else if (algorithm.equals("rsa") && RSA.getPrivateKey() != null && RSA.getPublicKey() != null) {
+	            	removeMainPanel();
+	            	createActionSelector();
+	                phase="actionSelector";
+	                actionLabel.setText("");
+	                return true;
+	            } else {
+	                actionLabel.setText("Fill all options");
+	                break;
+	            }
+	        case "actionSelector":
+	            if (encryptButton.isSelected()) {
+	            	removeMainPanel();
+	                //Show next phase
+	            	action="encrypt";
+	                phase="next";
+	                actionLabel.setText("");
+	                return true;
+	            } else if (decryptButton.isSelected()) {
+	            	removeMainPanel();
+	                //Show next phase
+	            	action="decrypt";
+	                phase="next";
+	                actionLabel.setText("");
+	                return true;
+	            } else {
+	                actionLabel.setText("No action selected");
 	                break;
 	            }
     	 }
@@ -170,17 +257,23 @@ public class MainFrame {
     }
     private boolean back() {
       	 switch (phase) {
-   	        case "AlghoritmSelector":
+   	        case "alghoritmSelector":
    	          break;
-   	        case "AesOptionsSelector":
+   	        case "optionSelector":
    	       		removeMainPanel();
    	        	createAlgorithmSelector();
-   	            phase="AlghoritmSelector";
+   	            phase="alghoritmSelector";
+   	            actionLabel.setText("");
    	        	break;
-   	        case "RsaOptionsSelector":
+   	        case "actionSelector":
    	       		removeMainPanel();
-   	        	createAlgorithmSelector();
-   	            phase="AlghoritmSelector";
+   	       		if(algorithm.equals("aes256")) {
+   	       			createAesOptionsSelector();
+   	       		}else if(algorithm.equals("rsa")) {
+   	       			createRsaOptionsSelector();
+   	       		}
+   	       		actionLabel.setText("");
+   	       		phase="optionSelector";
    	        	break;
       	 }
       	 return false;

@@ -40,6 +40,11 @@ public class MainFrame {
     private JRadioButton encryptButton;
     private JRadioButton decryptButton;
     private JTextField textText;
+    private JTextField saltText;
+    private JTextField secretKeyText;
+    private JTextField publicKeyText;
+    private JTextField privateKeyText;
+
     
     private String phase = "alghoritmSelector"; 
     private String algorithm = null; 
@@ -217,13 +222,17 @@ public class MainFrame {
 	                break;
 	            }
 	        case "optionSelector":
-	            if (algorithm.equals("aes256") && AES256.getSalt() != null && AES256.getSecretKey() != null) {
+	            if (algorithm.equals("aes256") && !saltText.getText().equals("") && !secretKeyText.getText().equals("")) {
+	            	AES256.setSalt(saltText.getText());
+	            	AES256.setSecretKey(secretKeyText.getText());
 	            	removeMainPanel();
 	            	createActionSelector();
 	                phase="actionSelector";
 	                actionLabel.setText("");
 	                return true;
-	            } else if (algorithm.equals("rsa") && RSA.getPrivateKey() != null && RSA.getPublicKey() != null) {
+	            } else if (algorithm.equals("rsa") && !publicKeyText.getText().equals("") && !privateKeyText.getText().equals("")) {
+	            	RSA.setPublicKey(publicKeyText.getText());
+	            	RSA.setPrivateKey(privateKeyText.getText());
 	            	removeMainPanel();
 	            	createActionSelector();
 	                phase="actionSelector";
@@ -335,7 +344,7 @@ public class MainFrame {
         gbc_saltLabel.gridy = 0;
         aes256OptionsSelector.add(saltLabel, gbc_saltLabel);
         
-        JTextField saltText = new JTextField();
+        saltText = new JTextField();
         GridBagConstraints gbc_saltText = new GridBagConstraints();
         gbc_saltText.fill = GridBagConstraints.BOTH;
         gbc_saltText.insets = new Insets(0, 0, 5, 5);
@@ -377,7 +386,7 @@ public class MainFrame {
         gbc_secretKeyLabel.gridy = 1;
         aes256OptionsSelector.add(secretKeyLabel, gbc_secretKeyLabel);
         
-        JTextField secretKeyText = new JTextField();
+        secretKeyText = new JTextField();
         GridBagConstraints gbc_secretKeyText = new GridBagConstraints();
         gbc_secretKeyText.fill = GridBagConstraints.BOTH;
         gbc_secretKeyText.insets = new Insets(0, 0, 0, 5);
@@ -434,7 +443,7 @@ public class MainFrame {
         gbc_publicKeyLabel.gridy = 0;
         rsaOptionsSelector.add(publicKeyLabel, gbc_publicKeyLabel);
 
-        JTextField publicKeyText = new JTextField();
+        publicKeyText = new JTextField();
         GridBagConstraints gbc_publicKeyText = new GridBagConstraints();
         gbc_publicKeyText.fill = GridBagConstraints.BOTH;
         gbc_publicKeyText.insets = new Insets(0, 0, 5, 5);
@@ -476,7 +485,7 @@ public class MainFrame {
         gbc_privateKeyLabel.gridy = 1;
         rsaOptionsSelector.add(privateKeyLabel, gbc_privateKeyLabel);
 
-        JTextField privateKeyText = new JTextField();
+        privateKeyText = new JTextField();
         GridBagConstraints gbc_privateKeyText = new GridBagConstraints();
         gbc_privateKeyText.fill = GridBagConstraints.BOTH;
         gbc_privateKeyText.insets = new Insets(0, 0, 5, 5);

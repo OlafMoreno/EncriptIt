@@ -39,11 +39,12 @@ public class MainFrame {
     private JRadioButton rsaButton;
     private JRadioButton encryptButton;
     private JRadioButton decryptButton;
-    
+    private JTextField textText;
     
     private String phase = "alghoritmSelector"; 
     private String algorithm = null; 
     private String action = null;
+    private String text = null;
     
     private JLabel actionLabel;
 
@@ -74,7 +75,6 @@ public class MainFrame {
         createFrame();
         createTitle();
         createAlgorithmSelector();
-        //createActionSelector();
         createActionPanel();
     }
 
@@ -236,20 +236,32 @@ public class MainFrame {
 	        case "actionSelector":
 	            if (encryptButton.isSelected()) {
 	            	removeMainPanel();
-	                //Show next phase
+	            	createTextSelector();
 	            	action="encrypt";
-	                phase="next";
+	                phase="textSelector";
 	                actionLabel.setText("");
 	                return true;
 	            } else if (decryptButton.isSelected()) {
 	            	removeMainPanel();
-	                //Show next phase
+	            	createTextSelector();
 	            	action="decrypt";
-	                phase="next";
+	                phase="textSelector";
 	                actionLabel.setText("");
 	                return true;
 	            } else {
 	                actionLabel.setText("No action selected");
+	                break;
+	            }
+	        case "textSelector":
+	            if (!textText.getText().equals("")) {
+	            	//removeMainPanel();
+	            	//next phase
+	                //phase="next";
+	                text=textText.getText();
+	            	actionLabel.setText("");
+	                return true;
+	            } else {
+	                actionLabel.setText("No text");
 	                break;
 	            }
     	 }
@@ -275,6 +287,12 @@ public class MainFrame {
    	       		actionLabel.setText("");
    	       		phase="optionSelector";
    	        	break;
+   	        case "textSelector":
+	       		removeMainPanel();
+	        	createActionSelector();
+	            phase="actionSelector";
+	            actionLabel.setText("");
+	        	break;
       	 }
       	 return false;
       }
@@ -389,6 +407,7 @@ public class MainFrame {
             }
         });
     }
+    
     private void createRsaOptionsSelector() {
         JPanel rsaOptionsSelector = new JPanel();
 
@@ -502,5 +521,65 @@ public class MainFrame {
         gbc_buttonGenerateKeys.gridx = 1;
         gbc_buttonGenerateKeys.gridy = 2;
         rsaOptionsSelector.add(buttonGenerateKeys, gbc_buttonGenerateKeys);
+    }
+    
+    private void createTextSelector() {
+        JPanel textSelector = new JPanel();
+
+        textSelector.setBorder(
+            new EmptyBorder(20, 20, 20, 20)
+        );
+
+        mainFrame.getContentPane().add(
+        		textSelector,
+            BorderLayout.CENTER
+        );
+        GridBagLayout gbl_textptionsSelector = new GridBagLayout();
+        gbl_textptionsSelector.columnWidths = new int[]{columnWidth/3, columnWidth/3, columnWidth/3};
+        gbl_textptionsSelector.rowHeights = new int[]{columnHeight, columnHeight, 0};
+        gbl_textptionsSelector.columnWeights = new double[]{0.0, 0.0, 0.0, Double.MIN_VALUE};
+        gbl_textptionsSelector.rowWeights = new double[]{0.0, 0.0, Double.MIN_VALUE};
+        textSelector.setLayout(gbl_textptionsSelector);
+        
+        JLabel textLabel = new JLabel("Text:");
+        GridBagConstraints gbc_textLabel = new GridBagConstraints();
+        gbc_textLabel.fill = GridBagConstraints.BOTH;
+        gbc_textLabel.insets = new Insets(0, 0, 5, 5);
+        gbc_textLabel.gridx = 0;
+        gbc_textLabel.gridy = 0;
+        textSelector.add(textLabel, gbc_textLabel);
+        
+        textText = new JTextField();
+        GridBagConstraints gbc_textText = new GridBagConstraints();
+        gbc_textText.fill = GridBagConstraints.BOTH;
+        gbc_textText.insets = new Insets(0, 0, 5, 5);
+        gbc_textText.gridx = 1;
+        gbc_textText.gridy = 0;
+        textSelector.add(textText, gbc_textText);
+        
+        JButton textPicker = new JButton("Read File");
+        GridBagConstraints gbc_textPicker = new GridBagConstraints();
+        gbc_textPicker.fill = GridBagConstraints.BOTH;
+        gbc_textPicker.insets = new Insets(0, 0, 5, 0);
+        gbc_textPicker.gridx = 2;
+        gbc_textPicker.gridy = 0;
+        textSelector.add(textPicker, gbc_textPicker);
+
+        textPicker.addActionListener(e -> {
+        	JFileChooser fileChooser = new JFileChooser();
+
+        	int result = fileChooser.showOpenDialog(mainFrame);
+
+        	if (result == JFileChooser.APPROVE_OPTION) {
+        		File file = fileChooser.getSelectedFile();
+
+        		try {
+        			String content = Files.readString(file.toPath());
+        			textText.setText(content);
+        		} catch (IOException ex) {
+        			ex.printStackTrace();
+        		}
+        	}
+        });  
     }
 }

@@ -25,6 +25,7 @@ import java.awt.event.ActionEvent;
 import java.awt.GridBagLayout;
 import java.awt.GridBagConstraints;
 import java.awt.Insets;
+import javax.swing.JTextPane;
 
 public class MainFrame {
 
@@ -47,12 +48,13 @@ public class MainFrame {
 
     
     private String phase = "alghoritmSelector"; 
-    private String algorithm = null; 
+    private String algorithm = ""; 
     private String action = null;
     private String text = null;
     
     private JLabel actionLabel;
-
+    private JButton backButton;
+    private JButton nextButton;
 
     /**
      * Launch the application.
@@ -189,8 +191,8 @@ public class MainFrame {
             panelAction,
             BorderLayout.SOUTH
         );
-        JButton backButton = new JButton("Back");
-        JButton nextButton = new JButton("Continue");
+        backButton = new JButton("Back");
+        nextButton = new JButton("Continue");
         actionLabel = new JLabel("");
         actionLabel.setBorder(new EmptyBorder(0, 5, 0, 5));
         panelAction.add(backButton, BorderLayout.WEST);
@@ -263,16 +265,24 @@ public class MainFrame {
 	            }
 	        case "textSelector":
 	            if (!textText.getText().equals("")) {
-	            	//removeMainPanel();
-	            	//next phase
-	                //phase="next";
 	                text=textText.getText();
+	            	removeMainPanel();
+	            	createShowResult();
+	                phase="showResult";
 	            	actionLabel.setText("");
+		            nextButton.setText("Restart");
 	                return true;
 	            } else {
 	                actionLabel.setText("No text");
 	                break;
 	            }
+	        case "showResult":
+            	removeMainPanel();
+            	createAlgorithmSelector();
+                phase="alghoritmSelector";
+            	actionLabel.setText("");
+	            nextButton.setText("Continue");
+	        	break;
     	 }
     	 return false;
     }
@@ -302,10 +312,36 @@ public class MainFrame {
 	            phase="actionSelector";
 	            actionLabel.setText("");
 	        	break;
+	   	     case "showResult":
+	         	removeMainPanel();
+	         	createTextSelector();
+	            phase="textSelector";
+	         	actionLabel.setText("");
+	            nextButton.setText("Continue");
+	        	break;
       	 }
       	 return false;
       }
 
+    private String execute() {
+    	switch (algorithm) {
+	        case "aes256":
+	        	if(action.equals("encrypt")) {
+	        		return AES256.encrypt(text);
+	        	}else if(action.equals("decrypt")) {
+	        		return AES256.decrypt(text);
+	        	}
+	          break;
+	        case "rsa":
+	        	if(action.equals("encrypt")) {
+	        		return RSA.encrypt(text);
+	        	}else if(action.equals("decrypt")) {
+	        		return RSA.decrypt(text);
+	        	}
+	        	break;
+	    }
+    	return "";
+    }
     
     private void removeMainPanel(){
     	Container contentPane = mainFrame.getContentPane();
@@ -590,5 +626,50 @@ public class MainFrame {
         		}
         	}
         });  
+    }
+    private void createShowResult() {
+        JPanel textSelector = new JPanel();
+
+        textSelector.setBorder(
+            new EmptyBorder(20, 20, 20, 20)
+        );
+
+        mainFrame.getContentPane().add(
+        		textSelector,
+            BorderLayout.CENTER
+        );
+        GridBagLayout gbl_textptionsSelector = new GridBagLayout();
+        gbl_textptionsSelector.columnWidths = new int[]{columnWidth/3, columnWidth/3, columnWidth/3};
+        gbl_textptionsSelector.rowHeights = new int[]{columnHeight, columnHeight, 0};
+        gbl_textptionsSelector.columnWeights = new double[]{0.0, 1.0, 0.0};
+        gbl_textptionsSelector.rowWeights = new double[]{0.0, 1.0, Double.MIN_VALUE};
+        textSelector.setLayout(gbl_textptionsSelector);
+        
+        JLabel textLabel = new JLabel("Result:");
+        GridBagConstraints gbc_textLabel = new GridBagConstraints();
+        gbc_textLabel.fill = GridBagConstraints.BOTH;
+        gbc_textLabel.insets = new Insets(0, 0, 5, 5);
+        gbc_textLabel.gridx = 0;
+        gbc_textLabel.gridy = 0;
+        textSelector.add(textLabel, gbc_textLabel);
+        
+        JButton saveButton = new JButton("Save on File");
+        GridBagConstraints gbc_saveButton = new GridBagConstraints();
+        gbc_saveButton.insets = new Insets(0, 0, 5, 0);
+        gbc_saveButton.gridx = 2;
+        gbc_saveButton.gridy = 0;
+        textSelector.add(saveButton, gbc_saveButton);        
+        
+        JTextPane textPane = new JTextPane();
+        textPane.setEditable(false);
+        GridBagConstraints gbc_textPane = new GridBagConstraints();
+        gbc_textPane.gridwidth = 3;
+        gbc_textPane.insets = new Insets(0, 0, 0, 5);
+        gbc_textPane.fill = GridBagConstraints.BOTH;
+        gbc_textPane.gridx = 0;
+        gbc_textPane.gridy = 1;
+        textSelector.add(textPane, gbc_textPane);
+        String result=execute();
+        textPane.setText(result);
     }
 }

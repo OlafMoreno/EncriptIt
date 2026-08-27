@@ -80,7 +80,6 @@ public class MainFrame {
 
     private void initialize() {
         createFrame();
-        createTitle();
         createAlgorithmSelector();
         createActionPanel();
     }
@@ -97,12 +96,22 @@ public class MainFrame {
         mainFrame.setContentPane(mainPanel);
     }
 
-    private void createTitle() {
-        JLabel title = new JLabel("Title");
+    private void createTitle(String text) {
+        Container contentPane = mainFrame.getContentPane();
+        BorderLayout layout = (BorderLayout) contentPane.getLayout();
+        Component currentPanel = layout.getLayoutComponent(BorderLayout.NORTH);
+        if (currentPanel != null) {
+            contentPane.remove(currentPanel);
+        }
+        contentPane.revalidate();
+        contentPane.repaint();
+        
+        JLabel title = new JLabel(text);
         mainFrame.getContentPane().add(title, BorderLayout.NORTH);
     }
 
     private void createAlgorithmSelector() {
+    	createTitle("Select a algorithm (Phase 1/5)");
         JPanel algorithmSelector = new JPanel();
         algorithmSelector.setBorder(
                 new EmptyBorder(20, 20, 20, 20)
@@ -117,19 +126,12 @@ public class MainFrame {
         gbl_algorithmSelector.columnWeights = new double[]{0.0, Double.MIN_VALUE};
         gbl_algorithmSelector.rowWeights = new double[]{0.0, 0.0, 0.0, Double.MIN_VALUE};
         algorithmSelector.setLayout(gbl_algorithmSelector);
-        JLabel label = new JLabel("Select algorithm:");
-        GridBagConstraints gbc_label = new GridBagConstraints();
-        gbc_label.fill = GridBagConstraints.BOTH;
-        gbc_label.insets = new Insets(0, 0, 5, 0);
-        gbc_label.gridx = 0;
-        gbc_label.gridy = 0;
-        algorithmSelector.add(label, gbc_label);
         aesButton = new JRadioButton("AES256");
         GridBagConstraints gbc_aesButton = new GridBagConstraints();
         gbc_aesButton.fill = GridBagConstraints.BOTH;
         gbc_aesButton.insets = new Insets(0, 0, 5, 0);
         gbc_aesButton.gridx = 0;
-        gbc_aesButton.gridy = 1;
+        gbc_aesButton.gridy = 0;
         algorithmSelector.add(aesButton, gbc_aesButton);
         ButtonGroup group = new ButtonGroup();
         group.add(aesButton);
@@ -137,13 +139,14 @@ public class MainFrame {
         GridBagConstraints gbc_rsaButton = new GridBagConstraints();
         gbc_rsaButton.fill = GridBagConstraints.BOTH;
         gbc_rsaButton.gridx = 0;
-        gbc_rsaButton.gridy = 2;
+        gbc_rsaButton.gridy = 1;
         algorithmSelector.add(rsaButton, gbc_rsaButton);
         group.add(rsaButton);
 
     }
     
     private void createActionSelector() {
+    	createTitle("Select a action (Phase 3/5)");
         JPanel optionSelector = new JPanel();
         optionSelector.setBorder(
                 new EmptyBorder(20, 20, 20, 20)
@@ -158,19 +161,12 @@ public class MainFrame {
         gbl_algorithmSelector.columnWeights = new double[]{0.0, Double.MIN_VALUE};
         gbl_algorithmSelector.rowWeights = new double[]{0.0, 0.0, 0.0, Double.MIN_VALUE};
         optionSelector.setLayout(gbl_algorithmSelector);
-        JLabel label = new JLabel("Select option:");
-        GridBagConstraints gbc_label = new GridBagConstraints();
-        gbc_label.fill = GridBagConstraints.BOTH;
-        gbc_label.insets = new Insets(0, 0, 5, 0);
-        gbc_label.gridx = 0;
-        gbc_label.gridy = 0;
-        optionSelector.add(label, gbc_label);
         encryptButton = new JRadioButton("Encrypt");
         GridBagConstraints gbc_encryptButton = new GridBagConstraints();
         gbc_encryptButton.fill = GridBagConstraints.BOTH;
         gbc_encryptButton.insets = new Insets(0, 0, 5, 0);
         gbc_encryptButton.gridx = 0;
-        gbc_encryptButton.gridy = 1;
+        gbc_encryptButton.gridy = 0;
         optionSelector.add(encryptButton, gbc_encryptButton);
         ButtonGroup group = new ButtonGroup();
         group.add(encryptButton);
@@ -178,7 +174,7 @@ public class MainFrame {
         GridBagConstraints gbc_decryptButton = new GridBagConstraints();
         gbc_decryptButton.fill = GridBagConstraints.BOTH;
         gbc_decryptButton.gridx = 0;
-        gbc_decryptButton.gridy = 2;
+        gbc_decryptButton.gridy = 1;
         optionSelector.add(decryptButton, gbc_decryptButton);
         group.add(decryptButton);
 
@@ -355,6 +351,7 @@ public class MainFrame {
     }
     
     private void createAesOptionsSelector() {
+    	createTitle("Set Options (Phase 2/5)");
         JPanel aes256OptionsSelector = new JPanel();
 
         aes256OptionsSelector.setBorder(
@@ -454,6 +451,7 @@ public class MainFrame {
     }
     
     private void createRsaOptionsSelector() {
+    	createTitle("Set Options (Phase 2/5)");
         JPanel rsaOptionsSelector = new JPanel();
 
         rsaOptionsSelector.setBorder(
@@ -569,6 +567,7 @@ public class MainFrame {
     }
     
     private void createTextSelector() {
+    	createTitle("Set Text (Phase 4/5)");
         JPanel textSelector = new JPanel();
 
         textSelector.setBorder(
@@ -585,14 +584,6 @@ public class MainFrame {
         gbl_textptionsSelector.columnWeights = new double[]{0.0, 0.0, 0.0, Double.MIN_VALUE};
         gbl_textptionsSelector.rowWeights = new double[]{0.0, 0.0, Double.MIN_VALUE};
         textSelector.setLayout(gbl_textptionsSelector);
-        
-        JLabel textLabel = new JLabel("Text:");
-        GridBagConstraints gbc_textLabel = new GridBagConstraints();
-        gbc_textLabel.fill = GridBagConstraints.BOTH;
-        gbc_textLabel.insets = new Insets(0, 0, 5, 5);
-        gbc_textLabel.gridx = 0;
-        gbc_textLabel.gridy = 0;
-        textSelector.add(textLabel, gbc_textLabel);
         
         textText = new JTextField();
         GridBagConstraints gbc_textText = new GridBagConstraints();
@@ -628,6 +619,7 @@ public class MainFrame {
         });  
     }
     private void createShowResult() {
+    	createTitle("Show Result (Phase 5/5)");
         JPanel textSelector = new JPanel();
 
         textSelector.setBorder(
@@ -644,14 +636,6 @@ public class MainFrame {
         gbl_textptionsSelector.columnWeights = new double[]{0.0, 1.0, 0.0};
         gbl_textptionsSelector.rowWeights = new double[]{0.0, 1.0, Double.MIN_VALUE};
         textSelector.setLayout(gbl_textptionsSelector);
-        
-        JLabel textLabel = new JLabel("Result:");
-        GridBagConstraints gbc_textLabel = new GridBagConstraints();
-        gbc_textLabel.fill = GridBagConstraints.BOTH;
-        gbc_textLabel.insets = new Insets(0, 0, 5, 5);
-        gbc_textLabel.gridx = 0;
-        gbc_textLabel.gridy = 0;
-        textSelector.add(textLabel, gbc_textLabel);
         
         JButton saveButton = new JButton("Save on File");
         GridBagConstraints gbc_saveButton = new GridBagConstraints();

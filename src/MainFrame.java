@@ -26,6 +26,7 @@ import java.awt.GridBagLayout;
 import java.awt.GridBagConstraints;
 import java.awt.Insets;
 import javax.swing.JTextPane;
+import javax.swing.JEditorPane;
 
 public class MainFrame {
 
@@ -40,7 +41,6 @@ public class MainFrame {
     private JRadioButton rsaButton;
     private JRadioButton encryptButton;
     private JRadioButton decryptButton;
-    private JTextField textText;
     private JTextField saltText;
     private JTextField secretKeyText;
     private JTextField publicKeyText;
@@ -55,6 +55,7 @@ public class MainFrame {
     private JLabel actionLabel;
     private JButton backButton;
     private JButton nextButton;
+    private JEditorPane editorPane;
 
     /**
      * Launch the application.
@@ -260,8 +261,8 @@ public class MainFrame {
 	                break;
 	            }
 	        case "textSelector":
-	            if (!textText.getText().equals("")) {
-	                text=textText.getText();
+	            if (!editorPane.getText().equals("")) {
+	                text=editorPane.getText();
 	            	removeMainPanel();
 	            	createShowResult();
 	                phase="showResult";
@@ -580,25 +581,26 @@ public class MainFrame {
         );
         GridBagLayout gbl_textptionsSelector = new GridBagLayout();
         gbl_textptionsSelector.columnWidths = new int[]{columnWidth/3, columnWidth/3, columnWidth/3};
-        gbl_textptionsSelector.rowHeights = new int[]{columnHeight, columnHeight, 0};
-        gbl_textptionsSelector.columnWeights = new double[]{0.0, 0.0, 0.0, Double.MIN_VALUE};
-        gbl_textptionsSelector.rowWeights = new double[]{0.0, 0.0, Double.MIN_VALUE};
+        gbl_textptionsSelector.rowHeights = new int[]{columnHeight, columnHeight, 0, 0};
+        gbl_textptionsSelector.columnWeights = new double[]{0, 1.0, 0.0};
+        gbl_textptionsSelector.rowWeights = new double[]{0, 1.0, 0.0, Double.MIN_VALUE};
         textSelector.setLayout(gbl_textptionsSelector);
         
-        textText = new JTextField();
-        GridBagConstraints gbc_textText = new GridBagConstraints();
-        gbc_textText.fill = GridBagConstraints.BOTH;
-        gbc_textText.insets = new Insets(0, 0, 5, 5);
-        gbc_textText.gridx = 1;
-        gbc_textText.gridy = 0;
-        textSelector.add(textText, gbc_textText);
+        editorPane = new JEditorPane();
+        GridBagConstraints gbc_editorPane = new GridBagConstraints();
+        gbc_editorPane.gridheight = 2;
+        gbc_editorPane.gridwidth = 3;
+        gbc_editorPane.insets = new Insets(0, 0, 5, 0);
+        gbc_editorPane.fill = GridBagConstraints.BOTH;
+        gbc_editorPane.gridx = 0;
+        gbc_editorPane.gridy = 0;
+        textSelector.add(editorPane, gbc_editorPane);
         
         JButton textPicker = new JButton("Read File");
         GridBagConstraints gbc_textPicker = new GridBagConstraints();
         gbc_textPicker.fill = GridBagConstraints.BOTH;
-        gbc_textPicker.insets = new Insets(0, 0, 5, 0);
         gbc_textPicker.gridx = 2;
-        gbc_textPicker.gridy = 0;
+        gbc_textPicker.gridy = 2;
         textSelector.add(textPicker, gbc_textPicker);
 
         textPicker.addActionListener(e -> {
@@ -611,7 +613,7 @@ public class MainFrame {
 
         		try {
         			String content = Files.readString(file.toPath());
-        			textText.setText(content);
+        			editorPane.setText(content);
         		} catch (IOException ex) {
         			ex.printStackTrace();
         		}
@@ -632,28 +634,28 @@ public class MainFrame {
         );
         GridBagLayout gbl_textptionsSelector = new GridBagLayout();
         gbl_textptionsSelector.columnWidths = new int[]{columnWidth/3, columnWidth/3, columnWidth/3};
-        gbl_textptionsSelector.rowHeights = new int[]{columnHeight, columnHeight, 0};
+        gbl_textptionsSelector.rowHeights = new int[]{columnHeight, columnHeight, 0, 0};
         gbl_textptionsSelector.columnWeights = new double[]{0.0, 1.0, 0.0};
-        gbl_textptionsSelector.rowWeights = new double[]{0.0, 1.0, Double.MIN_VALUE};
+        gbl_textptionsSelector.rowWeights = new double[]{0.0, 1.0, 0.0, Double.MIN_VALUE};
         textSelector.setLayout(gbl_textptionsSelector);
-        
-        JButton saveButton = new JButton("Save on File");
-        GridBagConstraints gbc_saveButton = new GridBagConstraints();
-        gbc_saveButton.insets = new Insets(0, 0, 5, 0);
-        gbc_saveButton.gridx = 2;
-        gbc_saveButton.gridy = 0;
-        textSelector.add(saveButton, gbc_saveButton);        
         
         JTextPane textPane = new JTextPane();
         textPane.setEditable(false);
         GridBagConstraints gbc_textPane = new GridBagConstraints();
+        gbc_textPane.gridheight = 2;
+        gbc_textPane.insets = new Insets(0, 0, 5, 0);
         gbc_textPane.gridwidth = 3;
-        gbc_textPane.insets = new Insets(0, 0, 0, 5);
         gbc_textPane.fill = GridBagConstraints.BOTH;
         gbc_textPane.gridx = 0;
-        gbc_textPane.gridy = 1;
+        gbc_textPane.gridy = 0;
         textSelector.add(textPane, gbc_textPane);
         String result=execute();
         textPane.setText(result);
+        
+        JButton saveButton = new JButton("Save on File");
+        GridBagConstraints gbc_saveButton = new GridBagConstraints();
+        gbc_saveButton.gridx = 2;
+        gbc_saveButton.gridy = 2;
+        textSelector.add(saveButton, gbc_saveButton);        
     }
 }

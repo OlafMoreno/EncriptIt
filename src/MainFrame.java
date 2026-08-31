@@ -656,6 +656,36 @@ public class MainFrame {
         GridBagConstraints gbc_saveButton = new GridBagConstraints();
         gbc_saveButton.gridx = 2;
         gbc_saveButton.gridy = 2;
-        textSelector.add(saveButton, gbc_saveButton);        
+        textSelector.add(saveButton, gbc_saveButton);
+        saveButton.addActionListener(e -> {
+        	saveFile(result);
+        });
+    }
+    private void saveFile(String textToSave) {
+    	JFileChooser fileChooser = new JFileChooser();
+        fileChooser.setDialogTitle("Save file");
+
+        int option = fileChooser.showSaveDialog(mainFrame);
+
+        if (option == JFileChooser.APPROVE_OPTION) {
+            File file = fileChooser.getSelectedFile();
+            
+            if (!file.getName().toLowerCase().endsWith(".txt")) {
+                file = new File(file.getAbsolutePath() + ".txt");
+            }
+            
+            try {
+                Files.writeString(
+                    file.toPath(),
+                    textToSave
+                );
+
+                actionLabel.setText("File saved");
+
+            } catch (IOException ex) {
+                actionLabel.setText("Error saving file");
+                ex.printStackTrace();
+            }
+        }
     }
 }

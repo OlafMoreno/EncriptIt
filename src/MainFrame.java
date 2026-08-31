@@ -396,20 +396,8 @@ public class MainFrame {
         aes256OptionsSelector.add(saltPicker, gbc_saltPicker);
 
         saltPicker.addActionListener(e -> {
-        	JFileChooser fileChooser = new JFileChooser();
-
-        	int result = fileChooser.showOpenDialog(mainFrame);
-
-        	if (result == JFileChooser.APPROVE_OPTION) {
-        		File file = fileChooser.getSelectedFile();
-
-        		try {
-        			String content = Files.readString(file.toPath());
-        			saltText.setText(content);
-        		} catch (IOException ex) {
-        			ex.printStackTrace();
-        		}
-        	}
+        	String content = readFile();
+        	saltText.setText(content);
         });
 
         JLabel secretKeyLabel = new JLabel("Secret Key:");
@@ -436,18 +424,8 @@ public class MainFrame {
         aes256OptionsSelector.add(secretKeyPicker, gbc_secretKeyPicker);
         
         secretKeyPicker.addActionListener(e -> {
-        	JFileChooser fileChooser = new JFileChooser();
-        	int result = fileChooser.showOpenDialog(mainFrame);
-        
-            if (result == JFileChooser.APPROVE_OPTION) {
-            	File file = fileChooser.getSelectedFile();
-                try {
-                	String content = Files.readString(file.toPath());
-                	secretKeyText.setText(content);
-                } catch (IOException ex) {
-                    ex.printStackTrace();
-                }	
-            }
+        	String content = readFile();
+        	secretKeyText.setText(content);
         });
     }
     
@@ -496,20 +474,8 @@ public class MainFrame {
         rsaOptionsSelector.add(publicKeyPicker, gbc_publicKeyPicker);
 
         publicKeyPicker.addActionListener(e -> {
-        	JFileChooser fileChooser = new JFileChooser();
-
-        	int result = fileChooser.showOpenDialog(mainFrame);
-
-        	if (result == JFileChooser.APPROVE_OPTION) {
-        		File file = fileChooser.getSelectedFile();
-
-        		try {
-        			String content = Files.readString(file.toPath());
-        			publicKeyText.setText(content);
-        		} catch (IOException ex) {
-        			ex.printStackTrace();
-        		}
-        	}
+        	String content = readFile();
+			publicKeyText.setText(content);
         });
         
         JLabel privateKeyLabel = new JLabel("Private Key:");
@@ -537,18 +503,8 @@ public class MainFrame {
         rsaOptionsSelector.add(privateKeyPicker, gbc_privateKeyPicker);
         
         privateKeyPicker.addActionListener(e -> {
-        	JFileChooser fileChooser = new JFileChooser();
-        	int result = fileChooser.showOpenDialog(mainFrame);
-        
-            if (result == JFileChooser.APPROVE_OPTION) {
-            	File file = fileChooser.getSelectedFile();
-                try {
-                	String content = Files.readString(file.toPath());
-                	privateKeyText.setText(content);
-                } catch (IOException ex) {
-                    ex.printStackTrace();
-                }	
-            }
+        	String content = readFile();
+        	privateKeyText.setText(content);
         });
         
         Button buttonGenerateKeys = new Button("Generate Random Keys");
@@ -604,20 +560,8 @@ public class MainFrame {
         textSelector.add(textPicker, gbc_textPicker);
 
         textPicker.addActionListener(e -> {
-        	JFileChooser fileChooser = new JFileChooser();
-
-        	int result = fileChooser.showOpenDialog(mainFrame);
-
-        	if (result == JFileChooser.APPROVE_OPTION) {
-        		File file = fileChooser.getSelectedFile();
-
-        		try {
-        			String content = Files.readString(file.toPath());
-        			editorPane.setText(content);
-        		} catch (IOException ex) {
-        			ex.printStackTrace();
-        		}
-        	}
+        	String content = readFile();
+			editorPane.setText(content);
         });  
     }
     private void createShowResult() {
@@ -660,6 +604,23 @@ public class MainFrame {
         saveButton.addActionListener(e -> {
         	saveFile(result);
         });
+    }
+    private String readFile() {
+    	JFileChooser fileChooser = new JFileChooser();
+
+    	int result = fileChooser.showOpenDialog(mainFrame);
+
+    	if (result == JFileChooser.APPROVE_OPTION) {
+    		File file = fileChooser.getSelectedFile();
+
+    		try {
+    			String content = Files.readString(file.toPath());
+    			return content;
+    		} catch (IOException ex) {
+    			ex.printStackTrace();
+    		}
+    	}
+    	return null;
     }
     private void saveFile(String textToSave) {
     	JFileChooser fileChooser = new JFileChooser();

@@ -18,7 +18,7 @@ public class AES256  {
 	static String salt = "salt";
 	static String secretKey = "key";
 	
-	public static String encrypt(String strToEncrypt) {
+	public static String encrypt(String strToEncrypt) throws Exception {
 
 	    try {
 
@@ -42,12 +42,11 @@ public class AES256  {
 
 	        return Base64.getEncoder().encodeToString(encryptedData);
 	    } catch (Exception e) {
-	        //e.printStackTrace();
-	        return null;
+	    	throw e;
 	    }
 	  }
 	
-	public static String decrypt(String strToDecrypt) {
+	public static String decrypt(String strToDecrypt) throws Exception {
 
 	    try {
 
@@ -70,8 +69,7 @@ public class AES256  {
 	        byte[] decryptedText = cipher.doFinal(cipherText);
 	        return new String(decryptedText, "UTF-8");
 	    } catch (Exception e) {
-	        //e.printStackTrace();
-	        return null;
+	        throw e;
 	    }
 	}
 	

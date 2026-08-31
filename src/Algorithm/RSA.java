@@ -37,7 +37,7 @@ public class RSA {
         }
     }
 
-    public static String encrypt(String strToEncrypt) {
+    public static String encrypt(String strToEncrypt) throws Exception {
 
         try {
 
@@ -54,12 +54,11 @@ public class RSA {
             return Base64.getEncoder().encodeToString(encryptedBytes);
 
         } catch (Exception e) {
-            //e.printStackTrace();
-            return null;
+        	throw e;
         }
     }
 
-    public static String decrypt(String strToDecrypt) {
+    public static String decrypt(String strToDecrypt) throws Exception {
 
         try {
 
@@ -76,8 +75,7 @@ public class RSA {
             return new String(decryptedBytes, StandardCharsets.UTF_8);
 
         } catch (Exception e) {
-            //e.printStackTrace();
-            return null;
+        	throw e;
         }
     }
 

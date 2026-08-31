@@ -320,23 +320,28 @@ public class MainFrame {
       	 return false;
       }
 
-    private String execute() {
-    	switch (algorithm) {
-	        case "aes256":
-	        	if(action.equals("encrypt")) {
-	        		return AES256.encrypt(text);
-	        	}else if(action.equals("decrypt")) {
-	        		return AES256.decrypt(text);
-	        	}
-	          break;
-	        case "rsa":
-	        	if(action.equals("encrypt")) {
-	        		return RSA.encrypt(text);
-	        	}else if(action.equals("decrypt")) {
-	        		return RSA.decrypt(text);
-	        	}
-	        	break;
-	    }
+    private String execute() throws Exception {
+    	switch (action) {
+    		case "encrypt":
+    			try {
+    				switch (algorithm) {
+						case "aes256":return AES256.encrypt(text);
+						case "rsa":return RSA.encrypt(text);
+    				}
+    			} catch (Exception e) {
+					throw new Exception("Encryption failed");
+				}
+ 
+    		case "decrypt":
+    			try {
+    				switch (algorithm) {
+						case "aes256":return AES256.decrypt(text);
+						case "rsa":return RSA.decrypt(text);
+    				}
+    			} catch (Exception e) {
+					throw new Exception("Decryption failed");
+				}
+			}
     	return "";
     }
     
@@ -593,9 +598,17 @@ public class MainFrame {
         gbc_textPane.gridx = 0;
         gbc_textPane.gridy = 0;
         textSelector.add(textPane, gbc_textPane);
-        String result=execute();
+        String result;
+        try{
+        	result=execute();
+        } catch (Exception e) {
+        	actionLabel.setText("ERROR");
+        	textPane.setText(e.getMessage());
+        	return;
+        }
         textPane.setText(result);
-        
+        actionLabel.setText("REsult:"+result);
+       
         JButton saveButton = new JButton("Save on File");
         GridBagConstraints gbc_saveButton = new GridBagConstraints();
         gbc_saveButton.gridx = 2;

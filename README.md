@@ -87,4 +87,8 @@ Some practical considerations:
 
 ## License
 
-No explicit license file is present in the repository at this time, so the project is currently provided as-is without a formal license declaration.
+This project is licensed under the GNU General Public License v3.0 (GPL-3.0).
+
+See the [LICENSE](LICENSE) file for the full text of the license.
+
+Copyright (C) 2026 Olaf Moreno
